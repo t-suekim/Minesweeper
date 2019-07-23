@@ -65,6 +65,7 @@
     <Compile Include="Assets\colli.cs" />
     <Compile Include="Assets\Element.cs" />
     <Compile Include="Assets\PlayField.cs" />
+    <None Include="Assets\BayatGames\Free Platform Game Assets\Readme.txt" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Unity Repos/Temporary Minesweeper/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
