@@ -31,10 +31,7 @@ public class Element : MonoBehaviour
 
     void OnMouseUpAsButton()
     {
-        print("Click");
-        if (Input.GetMouseButtonDown(0)) print("Pressed left click.");
-        if (Input.GetMouseButtonDown(1)) print("Pressed right click.");
-        if (Input.GetMouseButtonDown(2)) print("Pressed middle click.");
+        
         // It's a mine
         if (mine)
         {
@@ -73,8 +70,6 @@ public class Element : MonoBehaviour
         // If flagged, unflag
         if (GetComponent<SpriteRenderer>().sprite.texture.name == "flag")
         {
-            print("replacing to defaul");
-
             GetComponent<SpriteRenderer>().sprite = defaultTexture;
         }  // If unflagged, flag
         else if (GetComponent<SpriteRenderer>().sprite.texture.name == "default")
