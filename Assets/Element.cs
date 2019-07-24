@@ -37,15 +37,18 @@ public class Element : MonoBehaviour
         // It's a mine
         if (mine)
         {
+            PlayField.status = "Boom!";
             // uncover all mines
             PlayField.uncoverMines();
 
             // game over
             print("you lose");
+            
         }
         // It's not a mine
         else
         {
+            PlayField.status = "Empty";
             // show adjacent mine number
             int x = (int)transform.position.x;
             int y = (int)transform.position.y;
@@ -59,7 +62,7 @@ public class Element : MonoBehaviour
             {
                 print("you win");
                 PlayField.score += 1;
-                
+                PlayField.status = "Clear!";
                 
                 
             }

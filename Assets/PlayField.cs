@@ -8,10 +8,11 @@ public class PlayField
     public static int w = 10; 
     public static int h = 10; 
     public static Element[,] elements = new Element[w, h];
-    public static double density = 0.01;
+    public static double density = 0.05;
     public static int score;
     public static int resetBoard = 0;
-    
+    public static string status;
+    public static string enemyStatus;
 
     // Uncover all Mines
     public static void uncoverMines()
@@ -23,7 +24,11 @@ public class PlayField
         }
     }
 
-    
+    public static void sendAction(int time)
+    {
+        // TODO sending interactions to enemy
+        enemyStatus = "Affected";
+    }
 
     public static bool isFinished()
     {

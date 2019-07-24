@@ -3,7 +3,10 @@ guid: 99a4f0d418ef2b1499dc498133c1c242
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - mineTexture: {fileID: 21300000, guid: 700196745f6a98a4a95039092bac68fc, type: 3}
+  - flagTexture: {fileID: 21300000, guid: ad680e1e8b471084aa9730aa09b7601b, type: 3}
+  - defaultTexture: {fileID: 21300000, guid: 1c311e0b869e679479ed89e92334ca39, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
