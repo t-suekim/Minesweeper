@@ -23,7 +23,7 @@ public class PlayField
         {
             if (elem.mine) elem.loadTexture(0);
         }
-        PlayField.isOpened = true;
+        isOpened = true;
     }
 
     public static void sendAction(int time)
@@ -43,7 +43,13 @@ public class PlayField
         return true;
     }
 
-    
+    public static bool flagAt(int x, int y)
+    {
+        // Coordinates in range? Then check for flag.
+        if (x >= 0 && y >= 0 && x < w && y < h)
+            return elements[x, y].flag;
+        return false;
+    }
 
     // Find out if a mine is at the coordinates
     public static bool mineAt(int x, int y)
@@ -52,6 +58,23 @@ public class PlayField
         if (x >= 0 && y >= 0 && x < w && y < h)
             return elements[x, y].mine;
         return false;
+    }
+
+    // Count adjacent flags for an element
+    public static int adjacentFlags(int x, int y)
+    {
+        int count = 0;
+
+        if (flagAt(x, y + 1)) ++count; // top
+        if (flagAt(x + 1, y + 1)) ++count; // top-right
+        if (flagAt(x + 1, y)) ++count; // right
+        if (flagAt(x + 1, y - 1)) ++count; // bottom-right
+        if (flagAt(x, y - 1)) ++count; // bottom
+        if (flagAt(x - 1, y - 1)) ++count; // bottom-left
+        if (flagAt(x - 1, y)) ++count; // left
+        if (flagAt(x - 1, y + 1)) ++count; // top-left
+
+        return count;
     }
 
     // Count adjacent mines for an element
@@ -82,7 +105,8 @@ public class PlayField
                 return;
 
             // uncover element
-            elements[x, y].loadTexture(adjacentMines(x, y));
+            if(elements[x, y].isCovered())
+                elements[x, y].loadTexture(adjacentMines(x, y));
             
             // close to a mine? then no more work needed here
             if (adjacentMines(x, y) > 0)
@@ -100,6 +124,56 @@ public class PlayField
             FFuncover(x - 1, y + 1, visited);
             FFuncover(x, y + 1, visited);
             FFuncover(x + 1, y + 1, visited);
+        }
+    }
+
+    public static void Chord(int x, int y)
+    {
+        if(adjacentMines(x, y) == adjacentFlags(x, y))
+        {
+            for (int i = x - 1; i <= x + 1; i++)
+            {
+                for (int j = y - 1; j <= y + 1; j++)
+                {
+                    if (i != x || j != y)
+                    {
+                        if (i >= 0 && j >= 0 && i < w && j < h && elements[i, j].isCovered() && !elements[i, j].flag)
+                        {
+                            // Uncover element as long as it is covered and is a number
+                            if (adjacentMines(i, j) > 0 && !elements[i, j].mine)
+                            {
+                                elements[i, j].loadTexture(adjacentMines(i, j));
+                            }
+                            else if(adjacentMines(i, j) > 0 && elements[i, j].mine)
+                            {
+                                // uncovered a mine!
+                                status = "Boom!";
+                                // uncover all mines
+                                uncoverMines();
+
+                                // game over
+                                gameOver = true;
+                            }
+                            else if(elements[i, j].mine)
+                            {
+                                // uncovered a mine!
+                                status = "Boom!";
+                                // uncover all mines
+                                uncoverMines();
+
+                                // game over
+                                gameOver = true;
+                            }
+                            else
+                            {
+                                FFuncover(i, j, new bool[w, h]);
+                            }
+                           
+                        }
+
+                    }
+                }
+            }
         }
     }
 

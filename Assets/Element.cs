@@ -5,10 +5,10 @@ public class Element : MonoBehaviour
 {
 
     // Is this a mine?
-    public bool mine;
+    public bool mine = false;
 
     // Is it currently flagged?
-    public bool flag;
+    public bool flag = false;
 
     // Different Textures
     public Sprite[] emptyTextures;
@@ -21,17 +21,17 @@ public class Element : MonoBehaviour
     // Is it still covered?
     public bool isCovered()
     {
-        return GetComponent<SpriteRenderer>().sprite.texture.name == "default";
+        return GetComponent<SpriteRenderer>().sprite.texture.name == "default" || GetComponent<SpriteRenderer>().sprite.texture.name == "flag";
     }
 
     
     // Load another texture
     public void loadTexture(int adjacentCount)
     {
-        if (mine)
-            GetComponent<SpriteRenderer>().sprite = mineTexture;
-        else if (flag)
+        if (flag)
             GetComponent<SpriteRenderer>().sprite = flagTexture;
+        else if (mine)
+            GetComponent<SpriteRenderer>().sprite = mineTexture;
         else
             GetComponent<SpriteRenderer>().sprite = emptyTextures[adjacentCount];
     }
@@ -66,7 +66,6 @@ public class Element : MonoBehaviour
                     // show adjacent mine number
                     int x = (int)transform.position.x;
                     int y = (int)transform.position.y;
-                    loadTexture(PlayField.adjacentMines(x, y));
 
                     // TODO: uncover area without mines
                     PlayField.FFuncover(x, y, new bool[PlayField.w, PlayField.h]);
@@ -86,9 +85,21 @@ public class Element : MonoBehaviour
             {
                 // Do nothing
             }
-            else
+            else if(Input.GetMouseButtonDown(0))
             {
                 // Logic for left clicking number
+                int x = (int)transform.position.x;
+                int y = (int)transform.position.y;
+                PlayField.Chord(x, y);
+
+                if (PlayField.isFinished() && !(PlayField.isOpened))
+                {
+                    print("you win");
+                    PlayField.score += 1;
+                    PlayField.status = "Clear!";
+                    PlayField.isOpened = true;
+
+                }
             }
             if (Input.GetMouseButtonDown(1))
             {
@@ -139,13 +150,13 @@ public class Element : MonoBehaviour
         print("Called a reroll");
         // Randomly decide if it's a mine or not
         mine = Random.value < PlayField.density;
-
+        flag = false;
         // Register in Grid
         int x = (int)transform.position.x;
         int y = (int)transform.position.y;
-        PlayField.elements[x, y] = this;
-
         GetComponent<SpriteRenderer>().sprite = defaultTexture;
+
+        PlayField.elements[x, y] = this;
     }
 
 }
