@@ -6,7 +6,10 @@ public class Element : MonoBehaviour
 
     // Is this a mine?
     public bool mine;
-    
+
+    // Is it currently flagged?
+    public bool flag;
+
     // Different Textures
     public Sprite[] emptyTextures;
     public Sprite mineTexture;
@@ -27,55 +30,70 @@ public class Element : MonoBehaviour
     {
         if (mine)
             GetComponent<SpriteRenderer>().sprite = mineTexture;
+        else if (flag)
+            GetComponent<SpriteRenderer>().sprite = flagTexture;
         else
             GetComponent<SpriteRenderer>().sprite = emptyTextures[adjacentCount];
     }
 
     void OnMouseUpAsButton()
     {
-        if (!PlayField.gameOver)
-        {
-            // It's a mine
-            if (mine)
-            {
-                PlayField.status = "Boom!";
-                // uncover all mines
-                PlayField.uncoverMines();
-
-                // game over
-                PlayField.gameOver = true;
-                print("you lose");
-
-            }
-            // It's not a mine
-            else
-            {
-                PlayField.status = "Empty";
-                // show adjacent mine number
-                int x = (int)transform.position.x;
-                int y = (int)transform.position.y;
-                loadTexture(PlayField.adjacentMines(x, y));
-
-                // TODO: uncover area without mines
-                PlayField.FFuncover(x, y, new bool[PlayField.w, PlayField.h]);
-
-                // find out if the game was won now
-                if (PlayField.isFinished() && !(PlayField.isOpened))
-                {
-                    print("you win");
-                    PlayField.score += 1;
-                    PlayField.status = "Clear!";
-                    PlayField.isOpened = true;
-
-                }
-            }
-        }
+        
     }
 
     void OnMouseOver()
     {
-        if(Input.GetMouseButtonDown(1) && !PlayField.gameOver){
-            ToggleFlag();
+        if (!PlayField.gameOver)
+        {
+            if (Input.GetMouseButtonDown(0) && GetComponent<SpriteRenderer>().sprite.texture.name == "default")
+            {
+                // It's a mine
+                if (mine)
+                {
+                    PlayField.status = "Boom!";
+                    // uncover all mines
+                    PlayField.uncoverMines();
+
+                    // game over
+                    PlayField.gameOver = true;
+                    print("you lose");
+
+                }
+                // It's not a mine
+                else
+                {
+                    PlayField.status = "Empty";
+                    // show adjacent mine number
+                    int x = (int)transform.position.x;
+                    int y = (int)transform.position.y;
+                    loadTexture(PlayField.adjacentMines(x, y));
+
+                    // TODO: uncover area without mines
+                    PlayField.FFuncover(x, y, new bool[PlayField.w, PlayField.h]);
+
+                    // find out if the game was won now
+                    if (PlayField.isFinished() && !(PlayField.isOpened))
+                    {
+                        print("you win");
+                        PlayField.score += 1;
+                        PlayField.status = "Clear!";
+                        PlayField.isOpened = true;
+
+                    }
+                }
+            }
+            else if (Input.GetMouseButtonDown(0) && GetComponent<SpriteRenderer>().sprite.texture.name == "flag")
+            {
+                // Do nothing
+            }
+            else
+            {
+                // Logic for left clicking number
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                ToggleFlag();
+            }
         }
     }
 
@@ -85,10 +103,12 @@ public class Element : MonoBehaviour
         if (GetComponent<SpriteRenderer>().sprite.texture.name == "flag")
         {
             GetComponent<SpriteRenderer>().sprite = defaultTexture;
+            flag = false;
         }  // If unflagged, flag
         else if (GetComponent<SpriteRenderer>().sprite.texture.name == "default")
         {
             GetComponent<SpriteRenderer>().sprite = flagTexture;
+            flag = true;
         }
     }
 
