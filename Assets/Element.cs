@@ -12,6 +12,8 @@ public class Element : MonoBehaviour
     public Sprite mineTexture;
     public Sprite flagTexture;
     public Sprite defaultTexture;
+    
+
 
     // Is it still covered?
     public bool isCovered()
@@ -54,7 +56,13 @@ public class Element : MonoBehaviour
 
             // find out if the game was won now
             if (PlayField.isFinished())
+            {
                 print("you win");
+                PlayField.score += 1;
+                
+                
+                
+            }
         }
     }
 
@@ -89,5 +97,28 @@ public class Element : MonoBehaviour
         int y = (int)transform.position.y;
         PlayField.elements[x, y] = this;
     }
-    
+
+    private void Update()
+    {
+        print("Called update");
+        if (PlayField.resetBoard > 0)
+        {
+            ReRoll();
+            PlayField.resetBoard--;
+        }
+    }
+    public void ReRoll()
+    {
+        print("Called a reroll");
+        // Randomly decide if it's a mine or not
+        mine = Random.value < PlayField.density;
+
+        // Register in Grid
+        int x = (int)transform.position.x;
+        int y = (int)transform.position.y;
+        PlayField.elements[x, y] = this;
+
+        GetComponent<SpriteRenderer>().sprite = defaultTexture;
+    }
+
 }

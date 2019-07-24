@@ -8,7 +8,11 @@ public class PlayField
     public static int w = 10; 
     public static int h = 10; 
     public static Element[,] elements = new Element[w, h];
-    public static double density = 0.07;
+    public static double density = 0.01;
+    public static int score;
+    public static int resetBoard = 0;
+    
+
     // Uncover all Mines
     public static void uncoverMines()
     {
@@ -18,6 +22,8 @@ public class PlayField
             if (elem.mine) elem.loadTexture(0);
         }
     }
+
+    
 
     public static bool isFinished()
     {
