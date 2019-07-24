@@ -13,7 +13,7 @@ public class PlayField
     public static int resetBoard = 0;
     public static string status;
     public static string enemyStatus;
-
+    public static bool isOpened;
     // Uncover all Mines
     public static void uncoverMines()
     {
@@ -22,6 +22,7 @@ public class PlayField
             
             if (elem.mine) elem.loadTexture(0);
         }
+        PlayField.isOpened = true;
     }
 
     public static void sendAction(int time)
@@ -39,6 +40,8 @@ public class PlayField
         // There are none => all are mines => game won.
         return true;
     }
+
+    
 
     // Find out if a mine is at the coordinates
     public static bool mineAt(int x, int y)

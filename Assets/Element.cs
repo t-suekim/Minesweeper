@@ -58,12 +58,12 @@ public class Element : MonoBehaviour
             PlayField.FFuncover(x, y, new bool[PlayField.w, PlayField.h]);
 
             // find out if the game was won now
-            if (PlayField.isFinished())
+            if (PlayField.isFinished() && !(PlayField.isOpened))
             {
                 print("you win");
                 PlayField.score += 1;
                 PlayField.status = "Clear!";
-                
+                PlayField.isOpened = true;
                 
             }
         }
@@ -106,6 +106,7 @@ public class Element : MonoBehaviour
         print("Called update");
         if (PlayField.resetBoard > 0)
         {
+            PlayField.isOpened = false;
             ReRoll();
             PlayField.resetBoard--;
         }
