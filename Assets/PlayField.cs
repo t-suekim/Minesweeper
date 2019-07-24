@@ -11,11 +11,11 @@ public class PlayField
     public static double density = 0.05;
     public static int score;
     public static int resetBoard = 0;
-    public static string status;
-    public static string enemyStatus;
-    public static bool isOpened;
-    public static bool gameOver = false;
-
+    public static string status = "Empty"; // TODO: Make this enumerable
+    public static string enemyStatus = "Default"; // TODO: Make this enumerable
+    public static bool isOpened; // Ensures players only potentially earn 1 point per round
+    public static bool gameOver = false; // Set true on timer end
+    public static float totalTime = 180;
     // Uncover all Mines
     public static void uncoverMines()
     {

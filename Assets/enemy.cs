@@ -10,20 +10,23 @@ public class enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayField.enemyStatus = default;
+        PlayField.enemyStatus = "Default";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (PlayField.status.Equals("Default"))
+        if (PlayField.enemyStatus != null)
         {
-            GetComponent<SpriteRenderer>().sprite = defaultTexture;
+            if (PlayField.enemyStatus.Equals("Default"))
+            {
+                GetComponent<SpriteRenderer>().sprite = defaultTexture;
 
-        }
-        else if (PlayField.status.Equals("Affected"))
-        {
-            GetComponent<SpriteRenderer>().sprite = affectedTexture;
+            }
+            else if (PlayField.enemyStatus.Equals("Affected"))
+            {
+                GetComponent<SpriteRenderer>().sprite = affectedTexture;
+            }
         }
     }
 }

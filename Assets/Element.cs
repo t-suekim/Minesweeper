@@ -126,13 +126,7 @@ public class Element : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        // Randomly decide if it's a mine or not
-        mine = Random.value < PlayField.density;
-
-        // Register in Grid
-        int x = (int)transform.position.x;
-        int y = (int)transform.position.y;
-        PlayField.elements[x, y] = this;
+        ReRoll(PlayField.density);
     }
 
     private void Update()
@@ -140,16 +134,17 @@ public class Element : MonoBehaviour
         print("Called update");
         if (PlayField.resetBoard > 0)
         {
-            PlayField.isOpened = false;
-            ReRoll();
             PlayField.resetBoard--;
+            PlayField.isOpened = false;
+            ReRoll(PlayField.density);
+            
         }
     }
-    public void ReRoll()
+    public void ReRoll(double density)
     {
         print("Called a reroll");
         // Randomly decide if it's a mine or not
-        mine = Random.value < PlayField.density;
+        mine = Random.value < density;
         flag = false;
         // Register in Grid
         int x = (int)transform.position.x;
