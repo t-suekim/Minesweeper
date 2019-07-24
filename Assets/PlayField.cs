@@ -6,7 +6,7 @@ public class PlayField
 {
     // The Grid itself
     public static int w = 10; 
-    public static int h = 10; 
+    public static int h = 10;
     public static Element[,] elements = new Element[w, h];
     public static double density = 0.05;
     public static int score;
@@ -14,12 +14,13 @@ public class PlayField
     public static string status;
     public static string enemyStatus;
     public static bool isOpened;
+    public static bool gameOver = false;
+
     // Uncover all Mines
     public static void uncoverMines()
     {
         foreach (Element elem in elements)
         {
-            
             if (elem.mine) elem.loadTexture(0);
         }
         PlayField.isOpened = true;
@@ -38,6 +39,7 @@ public class PlayField
             if (elem.isCovered() && !elem.mine)
                 return false;
         // There are none => all are mines => game won.
+        gameOver = true;
         return true;
     }
 

@@ -7,5 +7,6 @@ public class Start : MonoBehaviour
     private void OnMouseUpAsButton()
     {
         PlayField.resetBoard += PlayField.w * PlayField.h;
+        PlayField.gameOver = false;
     }
 }

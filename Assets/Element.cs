@@ -33,45 +33,48 @@ public class Element : MonoBehaviour
 
     void OnMouseUpAsButton()
     {
-        
-        // It's a mine
-        if (mine)
+        if (!PlayField.gameOver)
         {
-            PlayField.status = "Boom!";
-            // uncover all mines
-            PlayField.uncoverMines();
-
-            // game over
-            print("you lose");
-            
-        }
-        // It's not a mine
-        else
-        {
-            PlayField.status = "Empty";
-            // show adjacent mine number
-            int x = (int)transform.position.x;
-            int y = (int)transform.position.y;
-            loadTexture(PlayField.adjacentMines(x, y));
-
-            // TODO: uncover area without mines
-            PlayField.FFuncover(x, y, new bool[PlayField.w, PlayField.h]);
-
-            // find out if the game was won now
-            if (PlayField.isFinished() && !(PlayField.isOpened))
+            // It's a mine
+            if (mine)
             {
-                print("you win");
-                PlayField.score += 1;
-                PlayField.status = "Clear!";
-                PlayField.isOpened = true;
-                
+                PlayField.status = "Boom!";
+                // uncover all mines
+                PlayField.uncoverMines();
+
+                // game over
+                PlayField.gameOver = true;
+                print("you lose");
+
+            }
+            // It's not a mine
+            else
+            {
+                PlayField.status = "Empty";
+                // show adjacent mine number
+                int x = (int)transform.position.x;
+                int y = (int)transform.position.y;
+                loadTexture(PlayField.adjacentMines(x, y));
+
+                // TODO: uncover area without mines
+                PlayField.FFuncover(x, y, new bool[PlayField.w, PlayField.h]);
+
+                // find out if the game was won now
+                if (PlayField.isFinished() && !(PlayField.isOpened))
+                {
+                    print("you win");
+                    PlayField.score += 1;
+                    PlayField.status = "Clear!";
+                    PlayField.isOpened = true;
+
+                }
             }
         }
     }
 
     void OnMouseOver()
     {
-        if(Input.GetMouseButtonDown(1)){
+        if(Input.GetMouseButtonDown(1) && !PlayField.gameOver){
             ToggleFlag();
         }
     }
